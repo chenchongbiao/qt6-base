@@ -910,6 +910,11 @@ QScreen *QOpenGLContext::screen() const
  */
 QOpenGLContext::OpenGLModuleType QOpenGLContext::openGLModuleType()
 {
+    QByteArray env = qgetenv(QByteArrayLiteral("QT_OPENGL_PREFER_GLES"));
+    if (env == QByteArrayLiteral("1") || env == QByteArrayLiteral("true")) {
+        qDebug("----------------USE LibGLES");
+        return LibGLES;
+    }
 #if defined(QT_OPENGL_DYNAMIC)
     Q_ASSERT(qGuiApp);
     return QGuiApplicationPrivate::instance()->platformIntegration()->openGLModuleType();
